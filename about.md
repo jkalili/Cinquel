@@ -1,4 +1,4 @@
-# Movie Dataset
+# TMDB Dataset
 
 <a href = "https://www.kaggle.com/tmdb/tmdb-movie-metadata">TMDB 5000 Movie Dataset Link </a>
 
@@ -14,57 +14,35 @@ Applications that might find this dataset useful could be film review sites that
 
 Our datasets could answer questions such as, "How many movies are about pirates?" or "How many movie titles contain the word 'dog' that are in the action genre? Given a wide variety of questions, our application will return accurate results to the user.
 
-# Tables
+# Schema
 
-- movie
+<center><img src="./assets/schema.png" style="width: 100%" ></img></center>
 
-  - id
-  - original language
-  - title
-  - popularity
-  - release_date
-  - vote_average
-  - vote_count
+<br>
 
-- moviegenre
+# Rationale
 
-  - movie_id
-  - genre_id
+**Why we chose the logical data model for this dataset and application—why was it the best fit? What features/characteristics were in its favor? What weren’t in its favor (but clearly wasn’t enough to overturn it)?**
 
-- genre
+We decided to use the Neo4j graph database model for our full database sdk partially because it was most fresh in our minds, but also because we found the graph databse model to fit our dataset well. The nodes, relations, and properties we made, made it very easy to understand the returned data subsets. It seemed like it was the best of both worlds (document/relational). We also like how similar cypher and sql were. Something we were concerned about was the scalability issued that come with a graph database, but given the managable size of our dataset, we decided to move forward with it anyways.
 
-  - genre_id
-  - genre_name
+# Assessment—now that the assignment is done, how does your group feel about this choice?
 
-- character
+Overall, our group was happy with the decision to use a graph database model. The movies in our database had a number of different types relationships, `HAS_KEYWORD`,
 
-  - movie_id
-  - actor_id
-  - character_name
-  - gender
-  - char_order
+# Populating the Database
 
-- actor
+## This process assumes you have already gotten a fresh neo4j database running on your machine
 
-  - actor_id
-  - name
+1. Run loader.py
+2. run:
 
-- moviekeyword
+```
+NEO4J_CONF=<PATH TO CONF> neo4j-admin import --database=neo4j --delimiter="|" --nodes=Movie=<PATH TO movies.csv> --nodes=Genre=<PATH TO genres.csv> --nodes=Cast=<PATH TO cast.csv> --nodes=Crew=<PATH TO crew.csv> —nodes=Keywords=<PATH TO keywords.csv> --relationships=<PATH TO genre_relations.csv> --relationships=<PATH TO cast_relations.csv> --relationships=<PATH TO keyword_relations.csv> --relationships=<PATH TO crew_relations.csv>
+```
 
-  - movie_id
-  - keyword_id
+3. start your, now populated, neo4j server with this command:
 
-- keyword
-
-  - keyword_id
-  - keyword_name
-
-Our datasets could answer questions such as, "How many movies are about pirates?" or "How many movie titles contain the word 'dog'? Given a wide variety of questions, our application will return accurate results to the user.
-
-## Instructions
-
-1.  Ensure you have proper modules installed.
-2.  Initialize database, then load schema.
-3.  Run main_loader.py. This will populate tables `movie`, `genre`, `moviegenre`, `keyword`, and `moviekeyword`.
-4.  Run credit_loader.py. This will populate tables `actor` and `character`.
-5.  Run queries!
+```
+NEO4J_CONF=<PATH TO CONF> neo4j console
+```
