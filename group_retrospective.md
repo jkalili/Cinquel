@@ -1,5 +1,8 @@
 # Group Retrospective
 
+Our group workflow was generally on track with the class. Although we had to request extentions for various assignemnts, we often didn't even need the extra time. There were times our group stumbled, for example, on the document database assignment, our group decided to switch from MongoDB to ElasticSearch due to problems we were facing. However situations like this were few and far between, and didn't majorly affect the group.   
+
+
 We mainly worked on all aspects of our project as a group, but if we had to assign specific tasks to each memeber, they would go as follows:
 
 ### For Past Assignments
