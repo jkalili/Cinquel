@@ -14,3 +14,31 @@ NEO4J_CONF=<PATH TO CONF> neo4j-admin import --database=neo4j --delimiter="|" --
 ```
 NEO4J_CONF=<PATH TO CONF> neo4j console
 ```
+
+# To Run DAL Programs
+
+1. cd into the python folder and run the command:
+
+```
+python3 -m venv env
+```
+
+2. run:
+
+```
+source env/bin/activate
+```
+
+and
+
+```
+pip3 install neo4j
+```
+
+3. While you are in the python environment, you can run the commands:
+
+```
+DB_URL=neo4j://localhost DB_PASSWORD=<your password> python3 add_movie.py
+DB_URL=neo4j://localhost DB_PASSWORD=<your password> python3 remove_movie.py
+DB_URL=neo4j://localhost DB_PASSWORD=<your password> python3 get_rating.py
+```
