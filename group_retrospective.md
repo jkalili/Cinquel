@@ -14,10 +14,10 @@ We mainly worked on all aspects of our project as a group, but if we had to assi
 
 ### For This Assignment
 
-| Name         | Task                         |
-| ------------ | ---------------------------- |
-| Carter Pon   | Full CRUD Capabilities/Index |
-| Jason Kalili | Full CRUD Capabilities/Index |
-| Adrian Leung | Index/Theory                 |
-| Josh Seamen  | Index Impact                 |
-| Amaya Alviz  | Video Production/Index       |
+| Name         | Task                                             |
+| ------------ | ------------------------------------------------ |
+| Carter Pon   | Full CRUD Capabilities/Index/Schema              |
+| Jason Kalili | Full CRUD Capabilities/Index/Group Retrospective |
+| Adrian Leung | Index/Theory/Setup                               |
+| Josh Seamen  | Index Impact/ About.md                           |
+| Amaya Alviz  | Video Production/Index                           |
