@@ -10,6 +10,7 @@ movieId = sys.argv[1]
 
 try:
     movie = remove_movie(int(movieId))
+    print(type(movie))
     print(
         f"Movie with ID:{movieId} has been removed")
 except ValueError:

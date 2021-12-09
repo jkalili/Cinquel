@@ -1,17 +1,15 @@
 import sys
-from tmdb_dal import getAverageRating
+from tmdb_dal import get_average_rating, does_id_exist
 
 if len(sys.argv) != 2:
-    print('Usage: remove_movie <movieId>')
+    print('Usage: get_rating <movieId>')
     exit(1)
 
 
 movieId = sys.argv[1]
-
-try:
-    result = getAverageRating(int(movieId))
-    print(
-        f"{movieId} has an average rating of {result}")
-except ValueError:
-    print(
-        f'Sorry, something went wrong.')
+invalid_id = (
+    f'Sorry, the movie id "{movieId}" is invalid.')
+result = get_average_rating(int(movieId))
+if not result:
+    raise Exception(invalid_id)
+print(f"{movieId} has an average rating of {result}")
