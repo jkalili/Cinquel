@@ -7,7 +7,7 @@ if len(sys.argv) != 2:
 
 castId = sys.argv[1]
 invalid_id = (
-    f'"{castId}" is an invalid identifier or does not exist. Please try again.')
+    f'"{castId}" is an invalid identifier or does not exist. Please try again. Note this could be a casing error')
 
 result = get_actor_performances(castId)
 if not result:

@@ -161,7 +161,7 @@ def update_movie_vote_average(movieId, voteAverage):
             SET m.vote_average = $voteAverage
             """,
             movieId=str(movieId),
-            voteAverage=int(voteAverage)
+            voteAverage=float(voteAverage)
         )
 
 

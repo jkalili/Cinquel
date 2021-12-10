@@ -10,7 +10,7 @@ movieId = sys.argv[1]
 vote_average = sys.argv[2]
 
 try:
-    result = update_movie_title(int(movieId), int(vote_average))
+    result = update_movie_vote_average(int(movieId), float(vote_average))
     print(
         f"{movieId} has been updated with a vote average of {vote_average}")
 except ValueError:
