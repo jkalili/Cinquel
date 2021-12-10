@@ -42,7 +42,8 @@ def get_title_by_id(movieId):
             """,
             movieId=str(movieId),
         )
-        return result.single().get('m.title')
+        query = result.single()
+        return query.get('m.title') if query else None
 
 
 def does_id_exist(movieId):
@@ -50,15 +51,15 @@ def does_id_exist(movieId):
         result = session.run(
             """
             MATCH (m:Movie {movieId: $movieId})
-            RETURN m.title
+            RETURN m
             """,
             movieId=str(movieId),
         )
-        return False if result.single() is None else True
+        return True if result.single() else False
 
 
 def remove_movie(movieId):
-    with db.session() as session:
+    with db.session() as seson:
         result = session.run(
             """
             MATCH (removedMovie:Movie { movieId: $movieId})
@@ -87,10 +88,12 @@ def update_movie_runtime(movieId, runtime):
             """
             MATCH(m:Movie {movieId: $movieId})
             SET m.runtime = $runtime
+            RETURN m
             """,
             movieId=str(movieId),
             runtime=int(runtime)
         )
+        return result.single()
 
 
 def update_movie_budget(movieId, budget):
@@ -99,10 +102,12 @@ def update_movie_budget(movieId, budget):
             """
             MATCH(m:Movie {movieId: $movieId})
             SET m.budget = $budget
+            RETURN m
             """,
             movieId=str(movieId),
             budget=int(budget)
         )
+        return result.single()
 
 
 def update_movie_popularity(movieId, popularity):
@@ -111,10 +116,12 @@ def update_movie_popularity(movieId, popularity):
             """
             MATCH(m:Movie {movieId: $movieId})
             SET m.popularity = $popularity
+            RETURN m
             """,
             movieId=str(movieId),
             popularity=int(popularity)
         )
+        return result.single()
 
 
 def update_movie_release_date(movieId, releaseDate):
@@ -123,10 +130,12 @@ def update_movie_release_date(movieId, releaseDate):
             """
             MATCH(m:Movie {movieId: $movieId})
             SET m.release_date = $releaseDate
+            RETURN m
             """,
             movieId=str(movieId),
             releaseDate=date.fromisoformat(releaseDate)
         )
+        return result.single()
 
 
 def update_movie_original_language(movieId, originalLanguage):
@@ -135,10 +144,12 @@ def update_movie_original_language(movieId, originalLanguage):
             """
             MATCH(m:Movie {movieId: $movieId})
             SET m.original_language = $originalLanguage
+            RETURN m
             """,
             movieId=str(movieId),
             originalLanguage=str(originalLanguage)
         )
+        return result.single()
 
 
 def update_movie_title(movieId, movieTitle):
@@ -147,10 +158,12 @@ def update_movie_title(movieId, movieTitle):
             """
             MATCH(m:Movie {movieId: $movieId})
             SET m.title = $movieTitle
+            RETURN m
             """,
             movieId=str(movieId),
             movieTitle=str(movieTitle)
         )
+        return result.single()
 
 
 def update_movie_vote_average(movieId, voteAverage):
@@ -159,17 +172,20 @@ def update_movie_vote_average(movieId, voteAverage):
             """
             MATCH(m:Movie {movieId: $movieId})
             SET m.vote_average = $voteAverage
+            RETURN m
             """,
             movieId=str(movieId),
             voteAverage=float(voteAverage)
         )
+        return result.single()
 
 
 def get_actor_performances(castID):
     with db.session() as session:
         result = session.run(
             """
-            MATCH (c:Cast {castID:$castID}) - [r:`PERFORMED IN`] -> (m:Movie)
+            MATCH (c:Cast) - [r:`PERFORMED IN`] -> (m:Movie)
+            WHERE toLower(c.castID) = toLower($castID)
             RETURN m.title,r.role
             ORDER BY m.title
             """,
@@ -186,6 +202,62 @@ def get_movies_with_keyword(keyword):
             WHERE k.keywordID = $keyword
             RETURN m.title
             """,
+            keyword=str(keyword)
+        )
+        return result.data()
+
+
+def get_id_by_title(title):
+    with db.session() as session:
+        result = session.run(
+            """
+            MATCH (m:Movie)
+            WHERE toLower(m.title) CONTAINS toLower($title)
+            RETURN m
+            ORDER BY m.title
+            """,
+            title=str(title)
+        )
+        return result.data()
+
+
+def acted_together(castID1, castID2):
+    with db.session() as session:
+        result = session.run(
+            '''
+            MATCH (c:Cast {castID:$castID1}) - [r:`PERFORMED IN`] -> (m:Movie) <- [r2:`PERFORMED IN`] - (c2:Cast {castID:$castID2})
+            RETURN c,c2,m,r,r2
+            ''',
+            castID1=str(castID1),
+            castID2=str(castID2)
+        )
+        return result.data()
+
+
+# ONE OF COMPLEX QUERIES
+def get_movies_and_actors_with_role(role):
+    with db.session() as session:
+        result = session.run(
+            '''
+            MATCH (c:Cast) - [r:`PERFORMED IN`] -> (m:Movie)
+            WHERE toLower(r.role) = toLower($role)
+            RETURN c,r,m
+            ORDER BY m.release_date DESC
+            ''',
+            role=str(role)
+        )
+        return result.data()
+
+
+def get_movies_and_directors_with_keyword(keyword):
+    with db.session() as session:
+        result = session.run(
+            '''
+            MATCH (c:Crew) - [r:`WORKED ON` {job:"Director"}] -> (m:Movie)
+            MATCH (m) - [r2:HAS_KEYWORD] -> (k:Keywords {keywordID:$keyword})
+            RETURN r2,k,m,r,c
+            ORDER BY m.popularity
+            ''',
             keyword=str(keyword)
         )
         return result.data()

@@ -1,18 +1,18 @@
 import sys
 from tmdb_dal import update_movie_runtime
-
+from errors import invalid_movieID_argument, invalid_runtime_argument, invalid_runtime_syntax
 if len(sys.argv) != 3:
-    print('Usage: update_movie_runtime <movieId> <updated_runtime>')
+    raise Exception(invalid_runtime_syntax)
     exit(1)
 
-
-movieId = sys.argv[1]
-runtime = sys.argv[2]
-
 try:
-    result = update_movie_runtime(int(movieId), int(runtime))
-    print(
-        f"{movieId} has been updated to a runtime of {runtime}")
+    movieId = sys.argv[1]
+    runtime = int(sys.argv[2])
 except ValueError:
-    print(
-        f'Sorry, something went wrong.')
+    raise Exception(invalid_runtime_argument)
+
+result = update_movie_runtime(int(movieId), int(runtime))
+if not result:
+    raise Exception(invalid_movieID_argument)
+print(
+    f"Movie with ID {movieId} has been updated to a runtime of {runtime}")

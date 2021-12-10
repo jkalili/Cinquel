@@ -1,10 +1,12 @@
 import sys
-from tmdb_dal import insert_movie
+from tmdb_dal import insert_movie, does_id_exist
+from errors import invalid_add_syntax, invalid_add_argument, invalid_add_id
 
 if len(sys.argv) != 9:
-    print('Usage: add_movie <budget> <movieId> <original_language> <popularity> <release_date> <runtime> <title> <vote_average>')
+    raise Exception(invalid_add_argument)
     exit(1)
-
+if does_id_exist(int(sys.argv[2])):
+    raise Exception(invalid_add_id)
 try:
     budget = int(sys.argv[1])
     movieId = int(sys.argv[2])
@@ -15,8 +17,7 @@ try:
     title = sys.argv[7]
     vote_average = float(sys.argv[8])
 except ValueError:
-    raise Exception('Please regard the following format: <budget: int> <movieId: str> <original_language: str> <popularity: float> <release_date: Date> <runtime: int> <title: str> <vote_average: float>')
-
+    raise Exception(invalid_add_syntax)
 movie = insert_movie(budget, movieId, original_language,
                      popularity, release_date, runtime, title, vote_average)
 print(f"Movie “{movie.get('title')}” added with id {movieId} ")
