@@ -113,3 +113,10 @@ invalid_movie_director_keyword_syntax = (
 
 invalid_movie_director_keyword_argument = (
     'The specified keyword does not match the required format or does not exist. Please try again')
+
+# Link actor with movies errors
+invalid_actor_link_syntax = (
+    'Usage: link_actor_with_movies <actor> <movies_and_roles>')
+
+invalid_actor_link_argument = (
+    'The specified actor, or movies and roles do not match the required format. Please try again.')

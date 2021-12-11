@@ -1,3 +1,7 @@
+# Schema
+
+<center><img src="./assets/schema.png" style="width: 100%" ></img></center>
+
 # Populating the Database
 
 ## This process assumes you have already gotten a fresh neo4j database running on your machine
@@ -35,12 +39,53 @@ and
 pip3 install neo4j
 ```
 
-3. While you are in the python environment, you can run the commands:
+# Creating an Index
+
+Creates a Binary Tree index for all movie titles.
 
 ```
-DB_URL=neo4j://localhost DB_PASSWORD=<your password> python3 add_movie.py
-DB_URL=neo4j://localhost DB_PASSWORD=<your password> python3 remove_movie.py
-DB_URL=neo4j://localhost DB_PASSWORD=<your password> python3 get_rating.py
+CREATE INDEX FOR (m:Movie) ON (m.title)
+```
+
+Run the following snippet to see the index that has been added.
+
+```
+:schema
+```
+
+Run the following snippet to drop the newly created index (if you wanna test it yourself)
+
+```
+DROP INDEX index_ea29e173
 ```
 
 # Evidence of Impact for Indexing
+
+### Before Creating Index on Movie Titles
+
+> Pay close attention to the timings at the bottom of the returned table (8ms)
+
+<center><img src="./assets/before.png" style="width: 100%" ></img></center>
+
+### After Creating Index on Movie Titles
+
+> Pay close attention to the timings at the bottom of the returned table (1ms)
+
+<center><img src="./assets/after.png" style="width: 100%" ></img></center>
+
+<br>
+
+## Table of Pre/Post Index Performance (10 Runs)
+
+| Before Index | After Index |
+| ------------ | ----------- |
+| 32 ms        | 3 ms        |
+| 8ms          | >1 ms       |
+| 7ms          | >1 ms       |
+| 6ms          | 1 ms        |
+| 6ms          | 1 ms        |
+| 9ms          | >1 ms       |
+| 9ms          | >1 ms       |
+| 8ms          | >1 ms       |
+| 8ms          | 1 ms        |
+| 8ms          | 1 ms        |

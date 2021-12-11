@@ -3,10 +3,13 @@ from tmdb_dal import get_actor_performances
 from errors import invalid_actor_syntax, invalid_actor_argument
 if len(sys.argv) != 2:
     raise Exception(invalid_actor_argument)
-    exit(1)
 
 
-castId = sys.argv[1]
+try:
+    castId = str(sys.argv[1])
+except ValueError:
+    raise Exception(invalid_actor_syntax)
+print(castId)
 result = get_actor_performances(castId)
 if not result:
     raise Exception(invalid_actor_argument)

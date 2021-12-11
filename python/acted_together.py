@@ -1,19 +1,19 @@
 import sys
 from tmdb_dal import acted_together
-from errors import invalid_actor, invalid_actor_arguments
+from errors import invalid_actor_syntax, invalid_actor_argument
 if len(sys.argv) != 3:
-    raise Exception(invalid_actor_arguments)
+    raise Exception(invalid_actor_argument)
     exit(1)
 
 
-castID1 = sys.argv[1]
-castID2 = sys.argv[2]
+first_cast_id = sys.argv[1]
+second_cast_id = sys.argv[2]
 
-result = acted_together(castID1, castID2)
+result = acted_together(first_cast_id, second_cast_id)
 if not result:
-    raise Exception(invalid_actor)
+    raise Exception(invalid_actor_syntax)
 print(
-    f"Actors {castID1} and {castID2} have appeared together in {len(result)} movies\n")
+    f"Actors {first_cast_id} and {second_cast_id} have appeared together in {len(result)} movies:\n")
 
 for entry in result:
     print(f'{entry["m"]["title"]}\n')
