@@ -359,32 +359,34 @@ def get_movies_and_directors_with_keyword(keyword):
 # TRANSACTION
 
 
-def link_actor_with_movies(actor, movies_and_roles):
+def link_actor_with_two_movies(actor, movies_and_roles):
     '''
-    link_actor_with_movies: given an actor, creates relationship(s) with attribute role(s) linking to specified movie(s)
+    link_actor_with_two_movies: given an actor, creates relationships with attribute roles linking to specified movies
     parameters: actor(str), movies_and_roles(list of tuples, where first index is movie, second index role)
-    returns: relationships created
+    returns: relationships created, None if failed.
     example: DB_URL=neo4j://localhost DB_PASSWORD=4949 python3 get_movies_and_directors_with_keyword.py love
 
     '''
     with db.session() as session:
-        data = []
-        for entry in movies_and_roles:
-            print(entry)
-            result = session.run(
-                '''
-                MATCH (c:Cast) 
-                MATCH (m:Movie {movieId: $movie})
-                WHERE toLower(c.castID) = toLower($actor)
-                CREATE (c) - [r:`PERFORMED IN` {role:$role}] -> (m)
-                RETURN c,r,m             
-                ''',
-                actor=str(actor),
-                movie=str(entry[0]),
-                role=str(entry[1])
-            )
-            data.append(result.single())
-        return data
+        print(actor)
+        print(movies_and_roles)
+        result = session.run(
+            '''
+            MATCH (c:Cast) 
+            MATCH (first_movie:Movie {movieId: $movie})
+            MATCH (second_movie:Movie {movieId: $second_movie})
+            WHERE toLower(c.castID) = toLower($actor)
+            CREATE (c) - [first_role:`PERFORMED IN` {role:$role}] -> (first_movie)
+            CREATE (c) - [second_role:`PERFORMED IN` {role:$second_role}] -> (second_movie)
+            RETURN c,first_role,first_movie,second_role,second_movie
+            ''',
+            actor=str(actor),
+            movie=str(movies_and_roles[0][0]),
+            role=str(movies_and_roles[0][1]),
+            second_movie=str(movies_and_roles[1][0]),
+            second_role=str(movies_and_roles[1][1])
+        )
+        return result.single()
 
 #
 # HELPERS

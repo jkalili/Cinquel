@@ -151,4 +151,6 @@ _Assumes user is in the python environment. See setup.md_
 
 #### Transaction
 
-`... link_actor_with_movies.py [actor] [movies_and_roles]`
+> note the movieId and role are comma seperated. (ex: 24, James Bond)
+
+`... link_actor_with_two_movies.py`
