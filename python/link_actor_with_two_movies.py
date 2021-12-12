@@ -14,7 +14,6 @@ except (ValueError, IndexError):
 result = link_actor_with_two_movies(actor, relationships)
 if not result:
     raise Exception(invalid_movie_id)
-print(result)
 print(
     f'\n Added 2 relationships for {actor} with role attributes:\n')
 print(

@@ -364,12 +364,10 @@ def link_actor_with_two_movies(actor, movies_and_roles):
     link_actor_with_two_movies: given an actor, creates relationships with attribute roles linking to specified movies
     parameters: actor(str), movies_and_roles(list of tuples, where first index is movie, second index role)
     returns: relationships created, None if failed.
-    example: DB_URL=neo4j://localhost DB_PASSWORD=4949 python3 get_movies_and_directors_with_keyword.py love
+    example: DB_URL=neo4j://localhost DB_PASSWORD=4949 python3 link_actor_with_two_movies.py Daniel' 'Craig 24 Dancer 18360 The' 'Car
 
     '''
     with db.session() as session:
-        print(actor)
-        print(movies_and_roles)
         result = session.run(
             '''
             MATCH (c:Cast) 
