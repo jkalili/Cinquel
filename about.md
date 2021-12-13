@@ -18,6 +18,8 @@ Our datasets could answer questions such as, "How many movies are about pirates?
 
 <center><img src="./assets/schema.png" style="width: 100%" ></img></center>
 
+For our dataset, we chose to model our graph with logical entity-relationships to resemble a real-world representation of this data. The `Cast` and `Crew` entities point to the `Movie` entity with the castID's role or job in the respective relationship: `PERFORMED_ IN` and `WORKED_ON`. Conversely, `Movie` points to entities `Genre` and `Keywords`. Their relationships are only labeled for more clarity while viewing the graph. 
+
 <br>
 
 # Rationale
